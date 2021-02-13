@@ -187,7 +187,8 @@ void querySMS(String querySMSContent)
 }
  
 void connectCallDFRobot(String conCallContent){
-  sim808.callUp(conCallContent);
+  conCallContent.toCharArray(msisdn, conCallContent.length());
+  sim808.callUp(msisdn);
 }
 
 void connectCall(String conCallContent){
