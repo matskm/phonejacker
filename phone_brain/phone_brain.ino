@@ -39,7 +39,7 @@ void setup(){
  
 void loop(){
 
-  debug_flash1(10);
+  //debug_flash1(10);
 
   while(nextionSerial.available()){
     rawMsg.concat(char(nextionSerial.read()));
