@@ -11,11 +11,11 @@ int debug_led = 13;
 void debug_flash1(int numFlash){
   for(int i=0; i<numFlash; i++){
     digitalWrite(debug_led,HIGH);
-    delay(10);
+    delay(100);
     digitalWrite(debug_led,LOW);
     delay(10);
   }
-  delay(100);
+  delay(300);
 }
 
 void setup(){
@@ -48,18 +48,21 @@ void loop(){
   
   if(!nextionSerial.available())
   {                   
-    //debug_flash1(10);
+    debug_flash1(3);
 
     if(rawMsg.length())
     {
       pageNum = rawMsg[rawMsg.length()-4];           //Read Nextion: get the page number.
     msg = rawMsg.substring(1, rawMsg.length()-4);    //Read Nextion: get the Raw Msges from Nextion.
     
+    debug_flash1(5);
+
     if((pageNum == "0") && (msg.length() != 0)){querySMS(msg);
     } 
     //Read Nextion: page0, Query all SMS from the GSM Buffer.
     if((pageNum == "1") && (msg.length() != 0)){
       //connectCall(msg);
+      debug_flash1(7);
       connectCallDFRobot(msg);
     }
       //Read Nextion: page1, Dial and Call the B-number.
