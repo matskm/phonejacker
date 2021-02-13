@@ -8,18 +8,19 @@ String rawMsg, pageNum, msg, pls;
 DFRobot_SIM808 sim808(&Serial);
 int debug_led = 13;
 
-void debug_flash1(){
-  for(int i=0; i<5; i++){
+void debug_flash1(int numFlash){
+  for(int i=0; i<numFlash; i++){
     digitalWrite(debug_led,HIGH);
     delay(10);
     digitalWrite(debug_led,LOW);
     delay(10);
   }
+  delay(100);
 }
 
 void setup(){
   pinMode(debug_led, OUTPUT);
-  debug_flash1();
+  debug_flash1(5);
 //Initialize HardwareSerial|SoftwareSerial|GSM module|Nextion display. Perform GSM Location Update.
   Serial.begin(9600);
   nextionSerial.begin(9600); 
@@ -37,6 +38,9 @@ void setup(){
 }
  
 void loop(){
+
+  debug_flash1(10);
+
   while(nextionSerial.available()){
     rawMsg.concat(char(nextionSerial.read()));
   }
@@ -44,6 +48,8 @@ void loop(){
   
   if(!nextionSerial.available())
   {                   
+    //debug_flash1(10);
+
     if(rawMsg.length())
     {
       pageNum = rawMsg[rawMsg.length()-4];           //Read Nextion: get the page number.
@@ -199,7 +205,7 @@ void querySMS(String querySMSContent)
 }
  
 void connectCallDFRobot(String conCallContent){
-  debug_flash1();
+  debug_flash1(5);
   conCallContent.toCharArray(msisdn, conCallContent.length());
   sim808.callUp(msisdn);
 }
