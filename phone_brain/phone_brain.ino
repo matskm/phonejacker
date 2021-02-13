@@ -1,19 +1,27 @@
 #include <SoftwareSerial.h>
+#include <DFRobot_sim808.h>
+
  
 SoftwareSerial nextionSerial(10, 11); //Rx, Tx
 char msisdn[30], ATcomm[30];
 String rawMsg, pageNum, msg, pls;
+DFRobot_SIM808 sim808(&Serial);
  
 void setup(){
 //Initialize HardwareSerial|SoftwareSerial|GSM module|Nextion display. Perform GSM Location Update.
   Serial.begin(9600);
   nextionSerial.begin(9600); 
-  while(!Serial)
-  {
-    ;
-    }
-    power_on();
-    delay(3000);
+  //while(!Serial)
+  //{
+  //  ;
+  //}
+
+  while(!sim808.init()) {
+    delay(1000);
+    Serial.print("Sim808 init error\r\n");
+  }
+  //  power_on();
+  delay(3000);
 }
  
 void loop(){
@@ -32,7 +40,9 @@ void loop(){
     if((pageNum == "0") && (msg.length() != 0)){querySMS(msg);
     } 
     //Read Nextion: page0, Query all SMS from the GSM Buffer.
-    if((pageNum == "1") && (msg.length() != 0)){connectCall(msg);
+    if((pageNum == "1") && (msg.length() != 0)){
+      //connectCall(msg);
+      connectCallDFRobot(msg);
     }
       //Read Nextion: page1, Dial and Call the B-number.
     if((pageNum == "2") && (msg.length() != 0)){releaseCall(msg);
@@ -176,6 +186,10 @@ void querySMS(String querySMSContent)
   Serial.println(querySMSContent);
 }
  
+void connectCallDFRobot(String conCallContent){
+  sim808.callUp(conCallContent);
+}
+
 void connectCall(String conCallContent){
 //Function to Initiate Mobile Originated Call To Dial B-Number.
   String nextionCallStr = "page2.t0.txt=\"Connecting\"";
