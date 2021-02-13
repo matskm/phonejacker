@@ -6,8 +6,20 @@ SoftwareSerial nextionSerial(10, 11); //Rx, Tx
 char msisdn[30], ATcomm[30];
 String rawMsg, pageNum, msg, pls;
 DFRobot_SIM808 sim808(&Serial);
- 
+int debug_led = 13;
+
+void debug_flash1(){
+  for(int i=0; i<5; i++){
+    digitalWrite(debug_led,HIGH);
+    delay(10);
+    digitalWrite(debug_led,LOW);
+    delay(10);
+  }
+}
+
 void setup(){
+  pinMode(debug_led, OUTPUT);
+  debug_flash1();
 //Initialize HardwareSerial|SoftwareSerial|GSM module|Nextion display. Perform GSM Location Update.
   Serial.begin(9600);
   nextionSerial.begin(9600); 
@@ -187,6 +199,7 @@ void querySMS(String querySMSContent)
 }
  
 void connectCallDFRobot(String conCallContent){
+  debug_flash1();
   conCallContent.toCharArray(msisdn, conCallContent.length());
   sim808.callUp(msisdn);
 }
