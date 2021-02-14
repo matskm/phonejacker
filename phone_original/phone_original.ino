@@ -60,6 +60,9 @@ void loop(){
     }         //Read the HardwareSerial.
   if(!Serial.available() && pls.length())
   {
+    // debug output...msm
+    Serial.println(pls);
+
     if(pls.indexOf("NO CARRIER") != -1)
     {
       //Goto to page0, if B-party Hang up.
