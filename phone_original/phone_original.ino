@@ -231,6 +231,9 @@ void sendSMS(String sendSMSContent){
 void answerCall(String ansCallContent)
 {
 //Function to change Nextion text and picture, if Incoming call is accepted.
+  //msm test
+  sendATcommand("ATA","OK",1000);
+  
   Serial.println(ansCallContent);
   String nextionCallStr = "page5.t0.txt=\"Connected\"";
   writeString(nextionCallStr);
