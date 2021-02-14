@@ -20,7 +20,7 @@ void debug_flash1(int numFlash){
 
 void setup(){
   pinMode(debug_led, OUTPUT);
-  debug_flash1(5);
+  //debug_flash1(5);
 //Initialize HardwareSerial|SoftwareSerial|GSM module|Nextion display. Perform GSM Location Update.
   Serial.begin(9600);
   nextionSerial.begin(9600); 
@@ -49,21 +49,21 @@ void loop(){
   
   if(!nextionSerial.available())
   {                   
-    debug_flash1(2);
+    //debug_flash1(2);
 
     if(rawMsg.length())
     {
       pageNum = rawMsg[rawMsg.length()-4];           //Read Nextion: get the page number.
       msg = rawMsg.substring(1, rawMsg.length()-4);    //Read Nextion: get the Raw Msges from Nextion.
     
-      debug_flash1(5);
+      //debug_flash1(5);
 
       if((pageNum == "0") && (msg.length() != 0)){querySMS(msg);
       } 
       //Read Nextion: page0, Query all SMS from the GSM Buffer.
       if((pageNum == "1") && (msg.length() != 0)){
         //connectCall(msg);
-        debug_flash1(7);
+        //debug_flash1(7);
         connectCallDFRobot(msg);
       }
         //Read Nextion: page1, Dial and Call the B-number.
@@ -209,11 +209,11 @@ void querySMS(String querySMSContent)
 }
  
 void connectCallDFRobot(String conCallContent){
-  debug_flash1(5);
+  //debug_flash1(5);
   Serial.println("inside connectCallDFRobot..");
   Serial.println(conCallContent);
   conCallContent.toCharArray(msisdn, conCallContent.length()+1);
-  
+
   sim808.callUp(msisdn);
 }
 
