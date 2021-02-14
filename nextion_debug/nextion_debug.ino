@@ -52,10 +52,17 @@ void loop(){
       Serial.println(msg);
       debug_flash1(5);
 
-      
+      bool pn = (pageNum == "1");
+      bool ln = (msg.length() != 0);
+      Serial.print("pn : ");
+      Serial.println(pn);
+
+      Serial.print("ln : ");
+      Serial.println(ln);
+
 
       //Read Nextion: page0, Query all SMS from the GSM Buffer.
-      if((pageNum == '1') && (msg.length() != 0)){
+      if((pageNum == "1") && (msg.length() != 0)){
         //connectCall(msg);
         Serial.println("BAZOOKS! Inside pageNum 1 block. Dude.");
         debug_flash1(7);
