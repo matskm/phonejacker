@@ -33,6 +33,7 @@ void setup(){
     delay(1000);
     Serial.print("Sim808 init error\r\n");
   }
+  Serial.println("Just beyond while init loop");
   //  power_on();
   delay(3000);
 }
@@ -209,6 +210,8 @@ void querySMS(String querySMSContent)
  
 void connectCallDFRobot(String conCallContent){
   debug_flash1(5);
+  Serial.println("inside connectCallDFRobot..");
+  Serial.println(conCallContent);
   conCallContent.toCharArray(msisdn, conCallContent.length());
   sim808.callUp(msisdn);
 }
