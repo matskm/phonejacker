@@ -11,11 +11,11 @@ int debug_led = 13;
 void debug_flash1(int numFlash){
   for(int i=0; i<numFlash; i++){
     digitalWrite(debug_led,HIGH);
-    delay(100);
+    delay(200);
     digitalWrite(debug_led,LOW);
-    delay(10);
+    delay(200);
   }
-  delay(300);
+  delay(1000);
 }
 
 void setup(){
