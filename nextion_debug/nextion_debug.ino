@@ -47,10 +47,18 @@ void loop(){
       pageNum = rawMsg[rawMsg.length()-4];           //Read Nextion: get the page number.
       msg = rawMsg.substring(1, rawMsg.length()-4);    //Read Nextion: get the Raw Msges from Nextion.
       Serial.println("pageNum:");
-      Serial.println(pagNum);
+      Serial.println(pageNum);
       Serial.println("msg:");
       Serial.println(msg);
       debug_flash1(5);
+
+      //Read Nextion: page0, Query all SMS from the GSM Buffer.
+      if((pageNum == "1") && (msg.length() != 0)){
+        //connectCall(msg);
+        Serial.println("BAZOOKS! Inside pageNum 1 block. Dude.");
+        debug_flash1(7);
+        //connectCallDFRobot(msg);
+      }
 
       // look at rawMsg
     }
