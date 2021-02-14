@@ -253,9 +253,9 @@ void smsComputation()
     msgCount = CPMSMsgCount.toInt();
     dspCount="page6.t51.txt=\""+CPMSMsgCount+"\"";
     writeString(dspCount);
-    if((msgCount > 0) && (msgCount <= 10)){writeString("page6.p1.pic=35");
+    if((msgCount > 0) && (msgCount <= 9)){writeString("page6.p1.pic=35");
     }
-    if(msgCount > 10){writeString("page6.p1.pic=34");
+    if(msgCount > 9){writeString("page6.p1.pic=34");
     }
     int spotSelect = 0;
     while(Serial.available())(Serial.read());
