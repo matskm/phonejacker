@@ -61,6 +61,7 @@ void loop(){
   if(!Serial.available() && pls.length())
   {
     // debug output...msm
+    Serial.println("Phone says...");
     Serial.println(pls);
 
     if(pls.indexOf("NO CARRIER") != -1)
