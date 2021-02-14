@@ -57,7 +57,7 @@ void loop(){
   while(Serial.available())
   {
     pls=Serial.readString();
-    }         //Read the HardwareSerial.
+  }         //Read the HardwareSerial.
   if(!Serial.available() && pls.length())
   {
     // debug output...msm
@@ -85,6 +85,7 @@ void loop(){
     writeString(nextionCallStr);
     sendATcommand("AT", "OK", 2000);
   }   
+    // RING RINGING
     if(pls.indexOf("+CLIP") != -1)
     {
     //Goto to page5, for any incoming calls.
@@ -122,6 +123,8 @@ void power_on(){
   searchNetwork();
   delay(2000);
   smsComputation(); 
+  //msm test
+  sendATcommand("AT+CLIP=1","OK",1000);
 }
  
 int8_t sendATcommand(char* ATcommand, char* expected_answer, unsigned int timeout)
