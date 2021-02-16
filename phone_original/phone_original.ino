@@ -9,7 +9,8 @@ DFRobot_SIM808 sim808(&Serial);
 SoftwareSerial nextionSerial(10, 11); //Rx, Tx
 char msisdn[30], ATcomm[30], charBuffer[64];
 String rawMsg, pageNum, msg, pls;
- 
+int flag;
+
 void setup(){
 //Initialize HardwareSerial|SoftwareSerial|GSM module|Nextion display. Perform GSM Location Update.
   Serial.begin(9600);
@@ -22,19 +23,22 @@ void setup(){
   }
   Serial.println("Sim808 init success");
   
-  if(sim808.sendSMS(PHONE_NUMBER, MESSAGE)){
-      Serial.print("Failed to send message");
-  }
-  else{
-      Serial.print("Message sent (SPOON!)");
-      
-  }
+  flag=0;
 
   //while(!Serial)  {    ;    }
   //power_on();
   //delay(3000);
 }
  
+void sendTestSMS(){
+  if(sim808.sendSMS(PHONE_NUMBER, MESSAGE)){
+      Serial.print("Failed to send message");
+  }
+  else{
+      Serial.print("Message sent (SPOON!)");
+  }
+}
+
 void loop(){
   while(nextionSerial.available()){
       rawMsg.concat(char(nextionSerial.read()));
@@ -42,6 +46,11 @@ void loop(){
 
   delay(10); //Read the SoftwareSerial
   
+  if(flag==0){
+      sendTestSMS();
+      flag=1;
+  }
+
   if(!nextionSerial.available())
   {                   
     if(rawMsg.length())
