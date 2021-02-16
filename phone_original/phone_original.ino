@@ -162,7 +162,7 @@ void loop(){
       sendTestSMS();
   }
 
-  if(flag==100){
+  if(flag==600){
       sendTestSMS();
   }
   flag++;
