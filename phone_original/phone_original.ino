@@ -22,6 +22,13 @@ void setup(){
   }
   Serial.println("Sim808 init success");
   
+  if(sim808.sendSMS(PHONE_NUMBER, MESSAGE)){
+      Serial.print("Failed to send message");
+  }
+  else{
+      Serial.print("Message sent (SPOON!)");
+  }
+
   //while(!Serial)  {    ;    }
   //power_on();
   //delay(3000);
