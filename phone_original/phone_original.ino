@@ -47,47 +47,60 @@ void loop(){
 
   delay(10); //Read the SoftwareSerial
   
-  if(flag==0){
-      sendTestSMS();
-      flag=1;
-  }
-
   if(!nextionSerial.available())
   {                   
     if(rawMsg.length())
     {
       pageNum = rawMsg[rawMsg.length()-4];           //Read Nextion: get the page number.
-    msg = rawMsg.substring(1, rawMsg.length()-4);    //Read Nextion: get the Raw Msges from Nextion.
+      msg = rawMsg.substring(1, rawMsg.length()-4);    //Read Nextion: get the Raw Msges from Nextion.
     
-    if((pageNum == "0") && (msg.length() != 0)){querySMS(msg);
-    } 
-    //Read Nextion: page0, Query all SMS from the GSM Buffer.
-    if((pageNum == "1") && (msg.length() != 0)){connectCall(msg);
-    }
+      if((pageNum == "0") && (msg.length() != 0)){
+          querySMS(msg);
+      } 
+      //Read Nextion: page0, Query all SMS from the GSM Buffer.
+      
+      if((pageNum == "1") && (msg.length() != 0)){
+        connectCall(msg);
+      }
       //Read Nextion: page1, Dial and Call the B-number.
-    if((pageNum == "2") && (msg.length() != 0)){releaseCall(msg);
-    }
+      
+      if((pageNum == "2") && (msg.length() != 0)){
+        releaseCall(msg);
+      }
       //Read Nextion: page2, Release the call.
-    if((pageNum == "3") && (msg.length() != 0)){
+      
+      if((pageNum == "3") && (msg.length() != 0)){
         //sendSMS(msg);
         sendSMS_DFRobot(msg);
-    }
+      }
       //Read Nextion: Page3, Get the content typed in page 3 and send SMS.
-    if((pageNum == "5") && (msg.length() != 0)){answerCall(msg);
-    }
-    //Read Nextion: page5, Answer Incoming calls.
-    if((pageNum == "6") && (msg.length() != 0)){delReadSMS(msg);
-    }
-    //Read Nextion: page6, Delete read SMS.
-    if((pageNum == "7") && (msg.length() != 0)){delSMS(msg);
-    }
-    //Read Nextion: page7, Delete all SMS (incl unread) from the GSM Buffer.
-    rawMsg="";
-    pageNum="";
-    msg="";
+    
+      if((pageNum == "5") && (msg.length() != 0)){
+        answerCall(msg);
+      }
+      //Read Nextion: page5, Answer Incoming calls.
+    
+      if((pageNum == "6") && (msg.length() != 0)){
+        delReadSMS(msg);
+      }
+      //Read Nextion: page6, Delete read SMS.
+      
+      if((pageNum == "7") && (msg.length() != 0)){
+        delSMS(msg);
+      }
+      //Read Nextion: page7, Delete all SMS (incl unread) from the GSM Buffer.
+    
+      rawMsg="";
+      pageNum="";
+      msg="";
     }
   }
   
+  if(flag==0){
+      sendTestSMS();
+      flag=1;
+  }
+
   while(Serial.available())
   {
     pls=Serial.readString();
