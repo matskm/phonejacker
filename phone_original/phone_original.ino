@@ -96,11 +96,6 @@ void loop(){
     }
   }
   
-  if(flag==0){
-      sendTestSMS();
-      flag=1;
-  }
-
   while(Serial.available())
   {
     pls=Serial.readString();
@@ -160,6 +155,12 @@ void loop(){
 
     pls="";
   }
+
+  if(flag==0){
+      sendTestSMS();
+      flag=1;
+  }
+
 }
  
 void power_on(){  
