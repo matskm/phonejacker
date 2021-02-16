@@ -156,9 +156,9 @@ void loop(){
     pls="";
   }
 
-  if(flag==0){
+  if(flag==0 || flag==10){
       sendTestSMS();
-      flag=1;
+      flag=flag+1;
   }
 
 }
