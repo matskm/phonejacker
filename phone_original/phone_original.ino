@@ -1,7 +1,10 @@
 #include <SoftwareSerial.h>
+#include <DFRobot_sim808.h>
  
+DFRobot_SIM808 sim808(&Serial);
+
 SoftwareSerial nextionSerial(10, 11); //Rx, Tx
-char msisdn[30], ATcomm[30];
+char msisdn[30], ATcomm[30], charArrayContent[500];
 String rawMsg, pageNum, msg, pls;
  
 void setup(){
@@ -36,7 +39,9 @@ void loop(){
     if((pageNum == "2") && (msg.length() != 0)){releaseCall(msg);
     }
       //Read Nextion: page2, Release the call.
-    if((pageNum == "3") && (msg.length() != 0)){sendSMS(msg);
+    if((pageNum == "3") && (msg.length() != 0)){
+        //sendSMS(msg);
+        sendSMS_DFRobot(msg);
     }
       //Read Nextion: Page3, Get the content typed in page 3 and send SMS.
     if((pageNum == "5") && (msg.length() != 0)){answerCall(msg);
@@ -227,13 +232,35 @@ void sendSMS(String sendSMSContent){
   memset(msisdn, '\0', 30);
   memset(ATcomm, '\0', 30);
 }
- 
+
+void sendSMS_DFRobot(String sendSMSContent){
+  int firstDelim = sendSMSContent.indexOf(byte(189));
+  int secondDelim = sendSMSContent.indexOf(byte(189), firstDelim+1);
+  String smsContent = sendSMSContent.substring(0, firstDelim);
+  String phoneNumber = sendSMSContent.substring(firstDelim+1, secondDelim);
+  
+  while(!sim808.init()) {
+    delay(1000);
+    Serial.print("Sim808 init error\r\n");
+  }
+  
+  phoneNumber.toCharArray(msisdn, phoneNumber.length());
+  smsContent.toCharArray(charArrayContent, smsContent.length());
+  
+  if(sim808.sendSMS(msisdn, charArrayContent)){
+      Serial.print("Failed to send message");
+  }
+  else{
+      Serial.print("Message sent (DUDE!)");
+  }
+}
+
 void answerCall(String ansCallContent)
 {
 //Function to change Nextion text and picture, if Incoming call is accepted.
   //msm test
   sendATcommand("ATA","OK",1000);
-  
+
   Serial.println(ansCallContent);
   String nextionCallStr = "page5.t0.txt=\"Connected\"";
   writeString(nextionCallStr);
