@@ -4,25 +4,33 @@
 DFRobot_SIM808 sim808(&Serial);
 
 SoftwareSerial nextionSerial(10, 11); //Rx, Tx
-char msisdn[30], ATcomm[30], charArrayContent[500];
+char msisdn[30], ATcomm[30], charBuffer[64];
 String rawMsg, pageNum, msg, pls;
  
 void setup(){
 //Initialize HardwareSerial|SoftwareSerial|GSM module|Nextion display. Perform GSM Location Update.
   Serial.begin(9600);
   nextionSerial.begin(9600); 
-  while(!Serial)
-  {
-    ;
-    }
-    power_on();
-    delay(3000);
+
+  //******** Initialize sim808 module *************
+  while(!sim808.init()) {
+    delay(1000);
+    Serial.print("Sim808 init error\r\n");
+  }
+  Serial.println("Sim808 init success");
+  
+  //while(!Serial)  {    ;    }
+  //power_on();
+  //delay(3000);
 }
  
 void loop(){
-  while(nextionSerial.available()){rawMsg.concat(char(nextionSerial.read()));
+  while(nextionSerial.available()){
+      rawMsg.concat(char(nextionSerial.read()));
   }
+
   delay(10); //Read the SoftwareSerial
+  
   if(!nextionSerial.available())
   {                   
     if(rawMsg.length())
@@ -76,45 +84,47 @@ void loop(){
       writeString(nextionCallStr);
     sendATcommand("AT", "OK", 2000);    
     }
-  if(pls.indexOf("BUSY") != -1)
-  {
-    //Goto to page0, if B-Number rejects incoming calls.
+
+    if(pls.indexOf("BUSY") != -1)
+    {
+      //Goto to page0, if B-Number rejects incoming calls.
       String nextionCallStr = "page page0";
       writeString(nextionCallStr);
-    sendATcommand("AT", "OK", 2000);
-  }
-  if(pls.indexOf("NO ANSWER") != -1)
-  {
-    //Goto to page0, if B-Number does not answer incoming calls.
-    String nextionCallStr = "page page0";
-    writeString(nextionCallStr);
-    sendATcommand("AT", "OK", 2000);
-  }   
+      sendATcommand("AT", "OK", 2000);
+    }
+    if(pls.indexOf("NO ANSWER") != -1)
+    {
+        //Goto to page0, if B-Number does not answer incoming calls.
+        String nextionCallStr = "page page0";
+        writeString(nextionCallStr);
+        sendATcommand("AT", "OK", 2000);
+    }   
     // RING RINGING
     if(pls.indexOf("+CLIP") != -1)
     {
-    //Goto to page5, for any incoming calls.
-    int msisdnFirstDelim = pls.indexOf("\"");
-    int msisdnSeconddDelim = pls.indexOf("\"", msisdnFirstDelim+1);
-    String mobNum = pls.substring(msisdnFirstDelim+1, msisdnSeconddDelim);
-    String nextionCallStr = "page page5";
-    writeString(nextionCallStr);
-    nextionCallStr = "page5.t1.txt=\""+mobNum+"\"";
-    writeString(nextionCallStr);
-    nextionCallStr = "page5.t0.txt=\"Incoming Call\"";
-    writeString(nextionCallStr);
-    nextionCallStr = "page5.p0.pic=20";
-    writeString(nextionCallStr);
-    sendATcommand("AT", "OK", 2000);
+        //Goto to page5, for any incoming calls.
+        int msisdnFirstDelim = pls.indexOf("\"");
+        int msisdnSeconddDelim = pls.indexOf("\"", msisdnFirstDelim+1);
+        String mobNum = pls.substring(msisdnFirstDelim+1, msisdnSeconddDelim);
+        String nextionCallStr = "page page5";
+        writeString(nextionCallStr);
+        nextionCallStr = "page5.t1.txt=\""+mobNum+"\"";
+        writeString(nextionCallStr);
+        nextionCallStr = "page5.t0.txt=\"Incoming Call\"";
+        writeString(nextionCallStr);
+        nextionCallStr = "page5.p0.pic=20";
+        writeString(nextionCallStr);
+        sendATcommand("AT", "OK", 2000);
     }
-  if(pls.indexOf("+CMTI") != -1)
-  {                   
-    //If new Msges|Query Msges|Display star picture.
-    smsComputation();
-    String nextionCallStr = "vis p2,1";
-    writeString(nextionCallStr);
-  }
-  pls="";
+    if(pls.indexOf("+CMTI") != -1)
+    {                   
+        //If new Msges|Query Msges|Display star picture.
+        smsComputation();
+        String nextionCallStr = "vis p2,1";
+        writeString(nextionCallStr);
+    }
+
+    pls="";
   }
 }
  
@@ -206,7 +216,7 @@ void releaseCall(String relCallContent)
 }
  
 void sendSMS(String sendSMSContent){
-//Function to get content typed from Nextion|select SMS Message Format|Send SMS Message to B-number.
+  //Function to get content typed from Nextion|select SMS Message Format|Send SMS Message to B-number.
   int firstDelim = sendSMSContent.indexOf(byte(189));
   int secondDelim = sendSMSContent.indexOf(byte(189), firstDelim+1);
   String smsContent = sendSMSContent.substring(0, firstDelim);
@@ -239,15 +249,10 @@ void sendSMS_DFRobot(String sendSMSContent){
   String smsContent = sendSMSContent.substring(0, firstDelim);
   String phoneNumber = sendSMSContent.substring(firstDelim+1, secondDelim);
   
-  while(!sim808.init()) {
-    delay(1000);
-    Serial.print("Sim808 init error\r\n");
-  }
-  
   phoneNumber.toCharArray(msisdn, phoneNumber.length());
-  smsContent.toCharArray(charArrayContent, smsContent.length());
+  smsContent.toCharArray(charBuffer, smsContent.length());
   
-  if(sim808.sendSMS(msisdn, charArrayContent)){
+  if(sim808.sendSMS(msisdn, charBuffer)){
       Serial.print("Failed to send message");
   }
   else{
