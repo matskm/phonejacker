@@ -27,6 +27,7 @@ void setup(){
   }
   else{
       Serial.print("Message sent (SPOON!)");
+      
   }
 
   //while(!Serial)  {    ;    }
