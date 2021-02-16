@@ -156,7 +156,14 @@ void loop(){
     pls="";
   }
 
-  if(flag==0 || flag==10){
+  Serial.print("flag: ");
+  Serial.println(flag);
+  if(flag==0){
+      sendTestSMS();
+      flag=flag+1;
+  }
+
+  if(flag==10){
       sendTestSMS();
       flag=flag+1;
   }
