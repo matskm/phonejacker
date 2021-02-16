@@ -40,6 +40,7 @@ void sendTestSMS(){
 }
 
 void loop(){
+
   while(nextionSerial.available()){
       rawMsg.concat(char(nextionSerial.read()));
   }
