@@ -160,13 +160,12 @@ void loop(){
   Serial.println(flag);
   if(flag==0){
       sendTestSMS();
-      flag=flag+1;
   }
 
-  if(flag==10){
+  if(flag==100){
       sendTestSMS();
-      flag=flag+1;
   }
+  flag++;
 
 }
  
