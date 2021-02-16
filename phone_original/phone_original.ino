@@ -1,6 +1,9 @@
 #include <SoftwareSerial.h>
 #include <DFRobot_sim808.h>
  
+#define PHONE_NUMBER "07729184758"
+#define MESSAGE  "hello spoon"
+
 DFRobot_SIM808 sim808(&Serial);
 
 SoftwareSerial nextionSerial(10, 11); //Rx, Tx
@@ -258,7 +261,8 @@ void sendSMS_DFRobot(String sendSMSContent){
   Serial.println(phoneNumber.length());
   Serial.println(smsContent.length());
 
-  if(sim808.sendSMS(msisdn, charBuffer)){
+  //if(sim808.sendSMS(msisdn, charBuffer)){
+  if(sim808.sendSMS(PHONE_NUMBER, MESSAGE)){
       Serial.print("Failed to send message");
   }
   else{
