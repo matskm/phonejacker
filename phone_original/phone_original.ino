@@ -355,12 +355,12 @@ void smsComputation_DFRobot(){
 
   for(int i=18; i>0; i--){
 
-    sim808.readSMS(messageIndex_df, message_df, MESSAGE_LENGTH, phone_df, datetime_df);
+    sim808.readSMS(i, message_df, MESSAGE_LENGTH, phone_df, datetime_df);
 
     //***********In order not to full SIM Memory, is better to delete it**********
     //sim808.deleteSMS(messageIndex);
     Serial.print("messageIndex: ");
-    Serial.println(messageIndex_df);
+    Serial.println(i);
     Serial.print("From number: ");
     Serial.println(phone_df);
     Serial.print("Datetime: ");
