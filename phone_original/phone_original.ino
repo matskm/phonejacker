@@ -174,13 +174,13 @@ void loop(){
     Serial.println(flag);
   }
 
-  if(flag==0){
-      sendTestSMS("DUDE flag0");
-  }
+  //if(flag==0){
+  //    sendTestSMS("DUDE flag0");
+  //}
 
-  if(flag==600){
-      sendTestSMS("SPODGE flag600");
-  }
+  //if(flag==600){
+  //    sendTestSMS("SPODGE flag600");
+  //}
   flag++;
 
 
@@ -381,6 +381,9 @@ void smsComputation()
           }
         if((readCMGRcommand.indexOf("+CMGR:")!=-1) && (spotSelect<(50)))
         {
+          // msm debug
+          Serial.println(readCMGRcommand);
+          
           cmgrIndex = readCMGRcommand.indexOf("+CMGR:", startCMGR+1);
           cmgrNLindex = readCMGRcommand.indexOf("\n", cmgrIndex+1);
           inCMGR = readCMGRcommand.substring(cmgrIndex, cmgrNLindex-1);
