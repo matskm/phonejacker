@@ -309,11 +309,12 @@ void sendSMS_DFRobot(String sendSMSContent){
   phoneNumber.toCharArray(msisdn, phoneNumber.length());
   smsContent.toCharArray(charBuffer, smsContent.length());
   
-  //Serial.println("Before send: number and message:");
-  //Serial.println(phoneNumber);
-  //Serial.println(smsContent);
-  //Serial.println(phoneNumber.length());
-  //Serial.println(smsContent.length());
+  Serial.println("Before send: number and message:");
+  Serial.println(sendSMSContent);
+  Serial.println(phoneNumber);
+  Serial.println(smsContent);
+  Serial.println(phoneNumber.length());
+  Serial.println(smsContent.length());
 
   if(sim808.sendSMS(msisdn, charBuffer)){
   //if(sim808.sendSMS(PHONE_NUMBER, MESSAGE)){
