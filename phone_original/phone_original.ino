@@ -12,6 +12,16 @@ String rawMsg, pageNum, msg, pls;
 int flag;
 char gprsBuffer[64];
 
+// df-robot read sms
+#define MESSAGE_LENGTH 160
+char message_df[MESSAGE_LENGTH];
+int messageIndex_df = 0;
+
+char phone_df[16];
+char datetime_df[24];
+// end df-robot read sms
+
+
 void setup(){
 //Initialize HardwareSerial|SoftwareSerial|GSM module|Nextion display. Perform GSM Location Update.
   Serial.begin(9600);
@@ -25,7 +35,8 @@ void setup(){
   Serial.println("Sim808 init success");
   
   flag=0;
-  smsComputation();
+  //smsComputation();
+  smsComputation_DFRobot();
 }
  
 void sendTestSMS(char * pmessage){
@@ -340,6 +351,26 @@ void answerCall(String ansCallContent)
   writeString(nextionCallStr);
 }
  
+void smsComputation_DFRobot(){
+
+  for(int i=18; i>0; i--){
+
+    sim808.readSMS(messageIndex_df, message_df, MESSAGE_LENGTH, phone_df, datetime_df);
+
+    //***********In order not to full SIM Memory, is better to delete it**********
+    //sim808.deleteSMS(messageIndex);
+    Serial.print("messageIndex: ");
+    Serial.println(messageIndex_df);
+    Serial.print("From number: ");
+    Serial.println(phone_df);
+    Serial.print("Datetime: ");
+    Serial.println(datetime_df);
+    Serial.print("Recieved Message: ");
+    Serial.println(message_df);
+  }
+
+}
+
 void smsComputation()
 {
 //Function to Read SMS from GSM buffer. Normally, SMS buffer size=18 & select only 9 SMS.
@@ -383,7 +414,7 @@ void smsComputation()
         {
           // msm debug
           Serial.println(readCMGRcommand);
-          
+
           cmgrIndex = readCMGRcommand.indexOf("+CMGR:", startCMGR+1);
           cmgrNLindex = readCMGRcommand.indexOf("\n", cmgrIndex+1);
           inCMGR = readCMGRcommand.substring(cmgrIndex, cmgrNLindex-1);
