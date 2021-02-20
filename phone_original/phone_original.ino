@@ -306,6 +306,7 @@ void sendSMS_DFRobot(String sendSMSContent){
   String smsContent = sendSMSContent.substring(0, firstDelim);
   String phoneNumber = sendSMSContent.substring(firstDelim+1, secondDelim);
   
+  
   phoneNumber.toCharArray(msisdn, phoneNumber.length()+1);
   smsContent.toCharArray(charBuffer, smsContent.length()+1);
   
