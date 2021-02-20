@@ -174,11 +174,11 @@ void loop(){
   }
 
   if(flag==0){
-      sendTestSMS("hello spoon flag0");
+      sendTestSMS("DUDE flag0");
   }
 
   if(flag==600){
-      sendTestSMS("hello spoon flag600");
+      sendTestSMS("SPODGE flag600");
   }
   flag++;
 
@@ -315,8 +315,8 @@ void sendSMS_DFRobot(String sendSMSContent){
   //Serial.println(phoneNumber.length());
   //Serial.println(smsContent.length());
 
-  //if(sim808.sendSMS(msisdn, charBuffer)){
-  if(sim808.sendSMS(PHONE_NUMBER, MESSAGE)){
+  if(sim808.sendSMS(msisdn, charBuffer)){
+  //if(sim808.sendSMS(PHONE_NUMBER, MESSAGE)){
       //Serial.print("Failed to send message");
   }
   else{
