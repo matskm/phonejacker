@@ -33,10 +33,10 @@ void setup(){
  
 void sendTestSMS(char * pmessage){
   if(sim808.sendSMS(PHONE_NUMBER, pmessage)){
-      Serial.print("Failed to send message");
+      //Serial.print("Failed to send message");
   }
   else{
-      Serial.print("Message sent (SPOON!)");
+      //Serial.print("Message sent (SPOON!)");
   }
 }
 
