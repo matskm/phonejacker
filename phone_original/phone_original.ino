@@ -30,8 +30,8 @@ void setup(){
   //delay(3000);
 }
  
-void sendTestSMS(){
-  if(sim808.sendSMS(PHONE_NUMBER, MESSAGE)){
+void sendTestSMS(char * pmessage){
+  if(sim808.sendSMS(PHONE_NUMBER, pmessage)){
       Serial.print("Failed to send message");
   }
   else{
@@ -156,14 +156,18 @@ void loop(){
     pls="";
   }
 
-  Serial.print("flag: ");
-  Serial.println(flag);
+
+  if(flag % 100 == 0){
+    Serial.print("flag: ");
+    Serial.println(flag);
+  }
+  
   if(flag==0){
-      sendTestSMS();
+      sendTestSMS("hello spoon flag0");
   }
 
   if(flag==600){
-      sendTestSMS();
+      sendTestSMS("hello spoon flag600");
   }
   flag++;
 

@@ -1,0 +1,7 @@
+17_02_20
+
+ideas:
+
+  - 12v power supply
+
+  - shift over to dfrobot method of listening to sim808
