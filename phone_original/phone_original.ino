@@ -25,13 +25,10 @@ void setup(){
   Serial.println("Sim808 init success");
   
   flag=0;
-
-  //while(!Serial)  {    ;    }
-  //power_on();
-  //delay(3000);
 }
  
 void sendTestSMS(char * pmessage){
+  // printing to serial breaks the phone for the session
   if(sim808.sendSMS(PHONE_NUMBER, pmessage)){
       //Serial.print("Failed to send message");
   }
@@ -48,9 +45,9 @@ void place_holder_oldSerial(){
   }         //Read the HardwareSerial.
   if(!Serial.available() && pls.length())
   {
-    // debug output...msm
-    Serial.println("Phone says...");
-    Serial.println(pls);
+    // debug output...msm [note this seems to bork the phone chip]
+    //Serial.println("Phone says...");
+    //Serial.println(pls);
 
     if(pls.indexOf("NO CARRIER") != -1)
     {
@@ -312,18 +309,18 @@ void sendSMS_DFRobot(String sendSMSContent){
   phoneNumber.toCharArray(msisdn, phoneNumber.length());
   smsContent.toCharArray(charBuffer, smsContent.length());
   
-  Serial.println("Before send: number and message:");
-  Serial.println(phoneNumber);
-  Serial.println(smsContent);
-  Serial.println(phoneNumber.length());
-  Serial.println(smsContent.length());
+  //Serial.println("Before send: number and message:");
+  //Serial.println(phoneNumber);
+  //Serial.println(smsContent);
+  //Serial.println(phoneNumber.length());
+  //Serial.println(smsContent.length());
 
   //if(sim808.sendSMS(msisdn, charBuffer)){
   if(sim808.sendSMS(PHONE_NUMBER, MESSAGE)){
-      Serial.print("Failed to send message");
+      //Serial.print("Failed to send message");
   }
   else{
-      Serial.print("Message sent (DUDE!)");
+      //Serial.print("Message sent (DUDE!)");
   }
 }
 
