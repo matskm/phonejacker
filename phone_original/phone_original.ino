@@ -10,6 +10,7 @@ SoftwareSerial nextionSerial(10, 11); //Rx, Tx
 char msisdn[30], ATcomm[30], charBuffer[64];
 String rawMsg, pageNum, msg, pls;
 int flag;
+char gprsBuffer[64];
 
 void setup(){
 //Initialize HardwareSerial|SoftwareSerial|GSM module|Nextion display. Perform GSM Location Update.
@@ -39,63 +40,8 @@ void sendTestSMS(char * pmessage){
   }
 }
 
-void loop(){
+void place_holder_oldSerial(){
 
-  while(nextionSerial.available()){
-      rawMsg.concat(char(nextionSerial.read()));
-  }
-
-  delay(10); //Read the SoftwareSerial
-  
-  if(!nextionSerial.available())
-  {                   
-    if(rawMsg.length())
-    {
-      pageNum = rawMsg[rawMsg.length()-4];           //Read Nextion: get the page number.
-      msg = rawMsg.substring(1, rawMsg.length()-4);    //Read Nextion: get the Raw Msges from Nextion.
-    
-      if((pageNum == "0") && (msg.length() != 0)){
-          querySMS(msg);
-      } 
-      //Read Nextion: page0, Query all SMS from the GSM Buffer.
-      
-      if((pageNum == "1") && (msg.length() != 0)){
-        connectCall(msg);
-      }
-      //Read Nextion: page1, Dial and Call the B-number.
-      
-      if((pageNum == "2") && (msg.length() != 0)){
-        releaseCall(msg);
-      }
-      //Read Nextion: page2, Release the call.
-      
-      if((pageNum == "3") && (msg.length() != 0)){
-        //sendSMS(msg);
-        sendSMS_DFRobot(msg);
-      }
-      //Read Nextion: Page3, Get the content typed in page 3 and send SMS.
-    
-      if((pageNum == "5") && (msg.length() != 0)){
-        answerCall(msg);
-      }
-      //Read Nextion: page5, Answer Incoming calls.
-    
-      if((pageNum == "6") && (msg.length() != 0)){
-        delReadSMS(msg);
-      }
-      //Read Nextion: page6, Delete read SMS.
-      
-      if((pageNum == "7") && (msg.length() != 0)){
-        delSMS(msg);
-      }
-      //Read Nextion: page7, Delete all SMS (incl unread) from the GSM Buffer.
-    
-      rawMsg="";
-      pageNum="";
-      msg="";
-    }
-  }
-  
   while(Serial.available())
   {
     pls=Serial.readString();
@@ -156,12 +102,80 @@ void loop(){
     pls="";
   }
 
+}
 
+void loop(){
+
+  while(nextionSerial.available()){
+      rawMsg.concat(char(nextionSerial.read()));
+  }
+
+  delay(10); //Read the SoftwareSerial
+  
+  if(!nextionSerial.available())
+  {                   
+    if(rawMsg.length())
+    {
+      pageNum = rawMsg[rawMsg.length()-4];           //Read Nextion: get the page number.
+      msg = rawMsg.substring(1, rawMsg.length()-4);    //Read Nextion: get the Raw Msges from Nextion.
+    
+      if((pageNum == "0") && (msg.length() != 0)){
+          querySMS(msg);
+      } 
+      //Read Nextion: page0, Query all SMS from the GSM Buffer.
+      
+      if((pageNum == "1") && (msg.length() != 0)){
+        connectCall(msg);
+      }
+      //Read Nextion: page1, Dial and Call the B-number.
+      
+      if((pageNum == "2") && (msg.length() != 0)){
+        releaseCall(msg);
+      }
+      //Read Nextion: page2, Release the call.
+      
+      if((pageNum == "3") && (msg.length() != 0)){
+        //sendSMS(msg);
+        sendSMS_DFRobot(msg);
+      }
+      //Read Nextion: Page3, Get the content typed in page 3 and send SMS.
+    
+      if((pageNum == "5") && (msg.length() != 0)){
+        answerCall(msg);
+      }
+      //Read Nextion: page5, Answer Incoming calls.
+    
+      if((pageNum == "6") && (msg.length() != 0)){
+        delReadSMS(msg);
+      }
+      //Read Nextion: page6, Delete read SMS.
+      
+      if((pageNum == "7") && (msg.length() != 0)){
+        delSMS(msg);
+      }
+      //Read Nextion: page7, Delete all SMS (incl unread) from the GSM Buffer.
+    
+      rawMsg="";
+      pageNum="";
+      msg="";
+    }
+  }
+  
+  // PHONE SECTION
+  if(sim808.readable()){
+    sim808_read_buffer(gprsBuffer,32,DEFAULT_TIMEOUT);
+    Serial.print("Phone says: ");
+    Serial.println(gprsBuffer);
+
+    sim808_clean_buffer(gprsBuffer,32);
+  }
+
+  // DEBUG SECTION
   if(flag % 100 == 0){
     Serial.print("flag: ");
     Serial.println(flag);
   }
-  
+
   if(flag==0){
       sendTestSMS("hello spoon flag0");
   }
