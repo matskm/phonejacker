@@ -25,6 +25,7 @@ void setup(){
   Serial.println("Sim808 init success");
   
   flag=0;
+  smsComputation();
 }
  
 void sendTestSMS(char * pmessage){
@@ -306,7 +307,7 @@ void sendSMS_DFRobot(String sendSMSContent){
   String smsContent = sendSMSContent.substring(0, firstDelim);
   String phoneNumber = sendSMSContent.substring(firstDelim+1, secondDelim);
   
-  
+
   phoneNumber.toCharArray(msisdn, phoneNumber.length()+1);
   smsContent.toCharArray(charBuffer, smsContent.length()+1);
   
@@ -341,7 +342,7 @@ void answerCall(String ansCallContent)
  
 void smsComputation()
 {
-//Function to Read SMS from GSM buffer. Normally, SMS buffer size=20 & select only 10 SMS.
+//Function to Read SMS from GSM buffer. Normally, SMS buffer size=18 & select only 9 SMS.
   int startCPMS=-1, CPMS1comma, CPMS2comma, msgCount=0;
   int startCMGR=-1, cmgrIndex, cmgrNLindex, smsNLindex;
   String sendCPMScommand, readCPMScommand, CPMSMsgCount;
@@ -369,7 +370,7 @@ void smsComputation()
     while(Serial.available())(Serial.read());
     if(msgCount != 0)
     {
-      for(int iSMS=20; iSMS>0; iSMS--)
+      for(int iSMS=18; iSMS>0; iSMS--)
       {
         sendCMGRcommand="AT+CMGR="+String(iSMS, DEC);
         Serial.println(sendCMGRcommand);
