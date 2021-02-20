@@ -162,13 +162,13 @@ void loop(){
   }
   
   // PHONE SECTION
-  //if(sim808.readable()){
-  //  sim808_read_buffer(gprsBuffer,32,DEFAULT_TIMEOUT);
+  if(sim808.readable()){
+    sim808_read_buffer(gprsBuffer,32,DEFAULT_TIMEOUT);
   //  //Serial.print("Phone says: ");
   //  Serial.println(gprsBuffer);
 
-  //  sim808_clean_buffer(gprsBuffer,32);
-  //}
+    sim808_clean_buffer(gprsBuffer,32);
+  }
 
   // DEBUG SECTION
   if(flag % 100 == 0){
