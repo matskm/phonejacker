@@ -158,7 +158,9 @@ void loop(){
       //Read Nextion: page6, Delete read SMS.
       
       if((pageNum == "7") && (msg.length() != 0)){
-        delSMS(msg);
+        //delSMS(msg);
+        int messageIndex = toInt(msg);
+        delSMS_DF(messageIndex);
       }
       //Read Nextion: page7, Delete all SMS (incl unread) from the GSM Buffer.
     
@@ -468,6 +470,10 @@ void delSMS(String indelSMS)
 {
 //Function to delete all (Read/Unread) SMS from the GSM Buffer.
   Serial.println(indelSMS);
+}
+
+void delSMS_DF(int messageIndex){
+  sim808.deleteSMS(messageIndex);
 }
  
 void writeString(String stringData)
