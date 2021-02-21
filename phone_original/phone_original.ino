@@ -122,7 +122,7 @@ void loop(){
       smsComputation_DFRobot();
   }
 
-  if(flag % 1000){
+  if(flag % 1000 == 0){
     Serial.print("flag: ");
     Serial.println(flag);
   }
