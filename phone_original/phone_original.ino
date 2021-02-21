@@ -9,7 +9,6 @@ DFRobot_SIM808 sim808(&Serial);
 SoftwareSerial nextionSerial(10, 11); //Rx, Tx
 char msisdn[30], ATcomm[30], charBuffer[64];
 String rawMsg, pageNum, msg, pls;
-int flag;
 char gprsBuffer[64];
 
 // df-robot read sms
@@ -34,7 +33,6 @@ void setup(){
   }
   Serial.println("Sim808 init success");
   
-  flag=0;
   //smsComputation();
   smsComputation_DFRobot();
 }
@@ -178,23 +176,6 @@ void loop(){
 
     sim808_clean_buffer(gprsBuffer,32);
   }
-
-  // DEBUG SECTION
-  if(flag % 100 == 0){
-    Serial.print("flag: ");
-    Serial.println(flag);
-  }
-
-  //if(flag==0){
-  //    sendTestSMS("DUDE flag0");
-  //}
-
-  //if(flag==600){
-  //    sendTestSMS("SPODGE flag600");
-  //}
-  flag++;
-
-
 }
  
 void power_on(){  
@@ -376,12 +357,12 @@ void SendSMS_To_NX(int i, char *message, char *phone, char *datetime, int nxVarN
 }
 
 void smsComputation_DFRobot(){
-  int nxVarNum = 0;
-  
+  int nxVarNumParent = 0;
+
   for(int i=18; i>0; i--){
     sim808.readSMS(i, message_df, MESSAGE_LENGTH, phone_df, datetime_df);
-    SendSMS_To_NX(i, message_df, phone_df, datetime_df, nxVarNum);
-    nxVarNum=nxVarNum+5;
+    SendSMS_To_NX(i, message_df, phone_df, datetime_df, nxVarNumParent);
+    nxVarNumParent=nxVarNumParent+5;
   }
 }
 
