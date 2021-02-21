@@ -11,6 +11,8 @@ char msisdn[30], ATcomm[30], charBuffer[64];
 String rawMsg, pageNum, msg, pls;
 char gprsBuffer[64];
 
+int flag;
+
 // df-robot read sms
 #define MESSAGE_LENGTH 160
 char message_df[MESSAGE_LENGTH];
@@ -22,6 +24,7 @@ char datetime_df[24];
 
 
 void setup(){
+  flag = 0;
 //Initialize HardwareSerial|SoftwareSerial|GSM module|Nextion display. Perform GSM Location Update.
   Serial.begin(9600);
   nextionSerial.begin(9600); 
@@ -112,6 +115,17 @@ void place_holder_oldSerial(){
 }
 
 void loop(){
+
+  flag++;
+
+  if(flag % 30000 == 0 && flag > 0){
+      smsComputation_DFRobot();
+  }
+
+  if(flag % 1000){
+    Serial.print("flag: ");
+    Serial.println(flag);
+  }
 
   while(nextionSerial.available()){
       rawMsg.concat(char(nextionSerial.read()));
