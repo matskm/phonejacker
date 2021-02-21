@@ -333,6 +333,19 @@ void answerCall(String ansCallContent)
   writeString(nextionCallStr);
 }
 
+void debugSMSRead(int i, char *message, char *phone, char *datetime, int nxVarNum){
+    Serial.print("i: ");
+    Serial.println(i);
+    Serial.print("phone: ");
+    Serial.println(phone);
+    Serial.print("datetime: ");
+    Serial.println(datetime);
+    Serial.print("message: ");
+    Serial.println(message);
+    Serial.print("nxVarNum: ");
+    Serial.println(nxVarNum);
+}
+
 void SendSMS_To_NX(int i, char *message, char *phone, char *datetime, int nxVarNum){
 
   String startOfPage="page6.t", middleOfPage=".txt=\"", pageContent;
@@ -362,6 +375,7 @@ void smsComputation_DFRobot(){
 
   for(int i=18; i>0; i--){
     sim808.readSMS(i, message_df, MESSAGE_LENGTH, phone_df, datetime_df);
+    debugSMSRead(i, message_df, phone_df, datetime_df, nxVarNumParent);
     SendSMS_To_NX(i, message_df, phone_df, datetime_df, nxVarNumParent);
     nxVarNumParent=nxVarNumParent+5;
   }
