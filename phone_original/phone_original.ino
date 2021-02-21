@@ -159,6 +159,8 @@ void loop(){
       
       if((pageNum == "7") && (msg.length() != 0)){
         //delSMS(msg);
+        //Serial.print("P7 DEL ATTEMPT: ");
+        //Serial.println(msg);
         delSMS_DF(msg.toInt());
       }
       //Read Nextion: page7, Delete all SMS (incl unread) from the GSM Buffer.
@@ -374,11 +376,11 @@ void smsComputation_DFRobot(){
   int nxVarNumParent = 0;
 
   int checkMessageIndex = sim808.isSMSunread();
-  Serial.print("checkMessagIndex: ");
-  Serial.println(checkMessageIndex);
+  //Serial.print("checkMessagIndex: ");
+  //Serial.println(checkMessageIndex);
   if(checkMessageIndex > 0){
     sim808.readSMS(checkMessageIndex, message_df, MESSAGE_LENGTH, phone_df, datetime_df);
-    SendSMS_To_NX(18, message_df, phone_df, datetime_df, nxVarNumParent);
+    SendSMS_To_NX(checkMessageIndex, message_df, phone_df, datetime_df, nxVarNumParent);
   }
 
   //for(int i=18; i>0; i--){
