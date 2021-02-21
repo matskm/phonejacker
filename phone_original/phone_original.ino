@@ -350,25 +350,52 @@ void answerCall(String ansCallContent)
   nextionCallStr = "page5.p0.pic=21";
   writeString(nextionCallStr);
 }
- 
+
+void SendSMS_To_NX(int i, char *message, char *phone, char *datetime, int nxVarNum){
+
+  String startOfPage="page6.t", middleOfPage=".txt=\"", pageContent;
+  String smsSeqNum, smsStatus, smsBNumber, smsDateTime, actualSMS;
+
+  smsSeqNum = String(i);
+  smsStatus = String("yop");
+  smsBNumber = String(phone);
+  smsDateTime = String(datetime);
+  actualSMS = String(message);
+
+  pageContent = startOfPage + nxVarNum + middleOfPage + smsStatus+"\"";
+  writeString(pageContent);nxVarNum++;
+  pageContent = startOfPage + nxVarNum + middleOfPage + smsBNumber+"\"";
+  writeString(pageContent);nxVarNum++;
+  pageContent = startOfPage + nxVarNum + middleOfPage + smsSeqNum+"\"";
+  writeString(pageContent);nxVarNum++;
+  pageContent = startOfPage + nxVarNum + middleOfPage + smsDateTime+"\"";
+  writeString(pageContent);nxVarNum++;
+  pageContent = startOfPage + nxVarNum + middleOfPage + actualSMS+"\"";
+  writeString(pageContent);
+  
+}
+
 void smsComputation_DFRobot(){
 
+  int nxVarNum = 0;
   for(int i=18; i>0; i--){
 
     sim808.readSMS(i, message_df, MESSAGE_LENGTH, phone_df, datetime_df);
 
-    //***********In order not to full SIM Memory, is better to delete it**********
-    //sim808.deleteSMS(messageIndex);
-    Serial.print("messageIndex: ");
-    Serial.println(i);
-    Serial.print("From number: ");
-    Serial.println(phone_df);
-    Serial.print("Datetime: ");
-    Serial.println(datetime_df);
-    Serial.print("Recieved Message: ");
-    Serial.println(message_df);
-  }
+    SendSMS_To_NX(i, message_df, phone_df, datetime_df, nxVarNum);
+    nxVarNum=nxVarNum+5;
 
+    // mappings to smsComputation()
+    //  i maps to iSMS
+    //  message_df maps to inSMS
+
+    // mapping in readSMS()
+    //  datetime_df maps to smsDateTime (embedded in readinCMGR) 
+    //  phone_df maps to smsBNumber (embedded in readinCMGR)
+    //  i maps to readiSMS (called iSMS in parent)
+    //  message_df maps to readinSMS (inSMS in parent)
+
+  }
 }
 
 void smsComputation()
@@ -413,7 +440,7 @@ void smsComputation()
         if((readCMGRcommand.indexOf("+CMGR:")!=-1) && (spotSelect<(50)))
         {
           // msm debug
-          Serial.println(readCMGRcommand);
+          //Serial.println(readCMGRcommand);
 
           cmgrIndex = readCMGRcommand.indexOf("+CMGR:", startCMGR+1);
           cmgrNLindex = readCMGRcommand.indexOf("\n", cmgrIndex+1);
