@@ -159,8 +159,7 @@ void loop(){
       
       if((pageNum == "7") && (msg.length() != 0)){
         //delSMS(msg);
-        int messageIndex = toInt(msg);
-        delSMS_DF(messageIndex);
+        delSMS_DF(msg.toInt());
       }
       //Read Nextion: page7, Delete all SMS (incl unread) from the GSM Buffer.
     
