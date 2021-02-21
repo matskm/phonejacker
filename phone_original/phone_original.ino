@@ -375,19 +375,15 @@ void SendSMS_To_NX(int i, char *message, char *phone, char *datetime, int nxVarN
 void smsComputation_DFRobot(){
   int nxVarNumParent = 0;
 
-  int checkMessageIndex = sim808.isSMSunread();
-  if(checkMessageIndex > 0){
-    sim808.readSMS(checkMessageIndex, message_df, MESSAGE_LENGTH, phone_df, datetime_df);
-    SendSMS_To_NX(checkMessageIndex, message_df, phone_df, datetime_df, nxVarNumParent);
+  int checkMessageIndex = 0;
+  for(int i=0; i<6; i++){
+    checkMessageIndex = sim808.isSMSunread();
+    if(checkMessageIndex > 0){
+      sim808.readSMS(checkMessageIndex, message_df, MESSAGE_LENGTH, phone_df, datetime_df);
+      SendSMS_To_NX(checkMessageIndex, message_df, phone_df, datetime_df, nxVarNumParent);
+      nxVarNumParent=nxVarNumParent+5;
+    }
   }
-  nxVarNumParent=nxVarNumParent+5;
-  
-  checkMessageIndex = sim808.isSMSunread();
-  if(checkMessageIndex > 0){
-    sim808.readSMS(checkMessageIndex, message_df, MESSAGE_LENGTH, phone_df, datetime_df);
-    SendSMS_To_NX(checkMessageIndex, message_df, phone_df, datetime_df, nxVarNumParent);
-  }
-
 
   //for(int i=18; i>0; i--){
   //  sim808.readSMS(i, message_df, MESSAGE_LENGTH, phone_df, datetime_df);
