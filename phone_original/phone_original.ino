@@ -34,10 +34,7 @@ void setup(){
   Serial.println("Sim808 init success");
   
   //smsComputation();
-  //smsComputation_DFRobot();
-  for(int j=1; j<10; j++){
-    delSMS_DF(j);
-  }
+  smsComputation_DFRobot();
 }
  
 void sendTestSMS(char * pmessage){
