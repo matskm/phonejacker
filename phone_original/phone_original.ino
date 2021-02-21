@@ -376,25 +376,12 @@ void SendSMS_To_NX(int i, char *message, char *phone, char *datetime, int nxVarN
 }
 
 void smsComputation_DFRobot(){
-
   int nxVarNum = 0;
+  
   for(int i=18; i>0; i--){
-
     sim808.readSMS(i, message_df, MESSAGE_LENGTH, phone_df, datetime_df);
-
     SendSMS_To_NX(i, message_df, phone_df, datetime_df, nxVarNum);
     nxVarNum=nxVarNum+5;
-
-    // mappings to smsComputation()
-    //  i maps to iSMS
-    //  message_df maps to inSMS
-
-    // mapping in readSMS()
-    //  datetime_df maps to smsDateTime (embedded in readinCMGR) 
-    //  phone_df maps to smsBNumber (embedded in readinCMGR)
-    //  i maps to readiSMS (called iSMS in parent)
-    //  message_df maps to readinSMS (inSMS in parent)
-
   }
 }
 
