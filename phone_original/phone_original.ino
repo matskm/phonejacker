@@ -390,7 +390,7 @@ void smsComputation_DFRobot(){
   int nxVarNumParent = 0;
 
   int checkMessageIndex = 0;
-  for(int i=0; i<6; i++){
+  for(int i=0; i<9; i++){
     checkMessageIndex = sim808.isSMSunread();
     if(checkMessageIndex > 0){
       sim808.readSMS(checkMessageIndex, message_df, MESSAGE_LENGTH, phone_df, datetime_df);
